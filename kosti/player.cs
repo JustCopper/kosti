@@ -8,10 +8,10 @@ namespace kosti
 {
     public class player
     {
-        string name;
-        int scores = 0;
-
-        bool is_turn = false;
+        public string name;
+        public int scores = 0;
+        public int diceState = 0; //0 - Первый бросок, 1 - второй, 2- третий
+        public bool is_turn = false;
 
         public player(string name)
         {
