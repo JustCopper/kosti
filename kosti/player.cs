@@ -10,7 +10,7 @@ namespace kosti
     {
         public string name;
         public int scores = 0;
-        public int diceState = 0; //0 - Первый бросок, 1 - второй, 2- третий
+        public int diceState = 0; 
         public bool is_turn = false;
 
         public player(string name)

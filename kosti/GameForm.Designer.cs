@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             panel1 = new Panel();
             panel3 = new Panel();
             pictureBox5 = new PictureBox();
@@ -115,7 +114,6 @@
             // pictureBox1
             // 
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.ImageLocation = "";
             pictureBox1.Location = new Point(27, 89);
             pictureBox1.Name = "pictureBox1";
@@ -126,7 +124,7 @@
             // 
             // UseBoxes_btn
             // 
-            UseBoxes_btn.Location = new Point(298, 256);
+            UseBoxes_btn.Location = new Point(286, 256);
             UseBoxes_btn.Name = "UseBoxes_btn";
             UseBoxes_btn.Size = new Size(135, 29);
             UseBoxes_btn.TabIndex = 5;
@@ -136,7 +134,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(132, 256);
+            button1.Location = new Point(115, 256);
             button1.Name = "button1";
             button1.Size = new Size(145, 29);
             button1.TabIndex = 4;
