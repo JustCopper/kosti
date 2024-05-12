@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Formats.Asn1.AsnWriter;
 
 
 
@@ -16,17 +17,18 @@ namespace kosti
     {
         private string[] imageFiles;
         private Random random = new Random();
-
+        List<player> people = new List<player>();
+        int round = 1;
 
         public GameForm(int players)
         {
-            List<player> people = new List<player>();
+            //List<player> people = new List<player>();
             for (int i = 0; i < players; i++)
             {
-                player player = new player($"player{i}");
+                player player = new player(i,$"player{i}");
                 people.Add(player);
             }
-
+            people[0].is_turn = true;
             // Бросаем 5 костей
             //for (int i = 0; i < 5; i++)
             //{
@@ -65,7 +67,7 @@ namespace kosti
             for (int i = 0; i < 5; i++)
             {
                 int current_box = random.Next(0,6);
-                diceRolls[i] = current_box;
+                diceRolls[i] = current_box+1;
                 //int index = random.Next(imageFiles.Length);
                 pictureBoxes[i].Image = Image.FromFile(imageFiles[current_box]);
 
@@ -73,35 +75,53 @@ namespace kosti
                 pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage; // Устанавливаем режим отображения, чтобы изображение масштабировалось
                 pictureBoxes[i].Show();
             }
-            game_controller_label.Text = Convert.ToString( EvaluateCombination(diceRolls));
+            player nowPlayingPlayer = people.Find(o => o.is_turn == true);
+            
+            game_controller_label.Text = $"Выпало: {Convert.ToString( EvaluateCombination(diceRolls))}, оставляем?\nБросок: {nowPlayingPlayer.diceState}";
         }
 
-        static object EvaluateCombination(int[] combination)
+         object EvaluateCombination(int[] combination)
         {
+            player current_player = people.Find(o => o.is_turn == true);
+            
             // Стрейт
             if (combination.SequenceEqual(new int[] { 1, 2, 3, 4, 5 }) || combination.SequenceEqual(new int[] { 2, 3, 4, 5, 6 }))
             {
-                return combination.All(x => x == combination[0]) ? 25 : 20;
+                int score = current_player.diceState == 1 ? 25 : 20;
+                people[current_player.id].diceState += 1;
+                return score;
             }
             // Фул-хаус
             else if (combination.GroupBy(x => x).Count(g => g.Count() == 3) == 1 && combination.GroupBy(x => x).Count(g => g.Count() == 2) == 1)
             {
-                return combination.All(x => x == combination[0]) ? 35 : 30;
+                int score = current_player.diceState == 1 ? 35 : 30;
+                people[current_player.id].diceState += 1;
+                return score;
             }
             // Четыре одинарных числа
             else if (combination.GroupBy(x => x).Count(g => g.Count() == 4) == 1)
             {
-                return combination.All(x => x == combination[0]) ? 45 : 40;
+                int score = current_player.diceState == 1 ? 45 : 40;
+                people[current_player.id].diceState += 1;
+                return score;
             }
             // Пять одинарных чисел (большой генерал)
             else if (combination.GroupBy(x => x).Count(g => g.Count() == 5) == 1)
             {
-                return combination.All(x => x == combination[0]) ? "Большой генерал" : "Малый генерал";
+                string score = current_player.diceState == 1 ? "Большой генерал" : "Малый генерал";
+                people[current_player.id].diceState += 1;
+                return score;
             }
             else
             {
-                return 0;
+                people[current_player.id].diceState += 1;
+                return combination.Sum();
             }
+        }
+
+        private void startNewRound()
+        {
+            throw new NotImplementedException();
         }
     }
 }
