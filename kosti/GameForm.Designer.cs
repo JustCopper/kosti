@@ -30,13 +30,18 @@
         {
             panel1 = new Panel();
             panel3 = new Panel();
+            box5 = new CheckBox();
+            box4 = new CheckBox();
+            box3 = new CheckBox();
+            box2 = new CheckBox();
+            box1 = new CheckBox();
             pictureBox5 = new PictureBox();
             pictureBox4 = new PictureBox();
             pictureBox3 = new PictureBox();
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
             UseBoxes_btn = new Button();
-            button1 = new Button();
+            pass_button = new Button();
             game_controller_label = new Label();
             round_controller_label = new Label();
             panel2 = new Panel();
@@ -64,13 +69,18 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(box5);
+            panel3.Controls.Add(box4);
+            panel3.Controls.Add(box3);
+            panel3.Controls.Add(box2);
+            panel3.Controls.Add(box1);
             panel3.Controls.Add(pictureBox5);
             panel3.Controls.Add(pictureBox4);
             panel3.Controls.Add(pictureBox3);
             panel3.Controls.Add(pictureBox2);
             panel3.Controls.Add(pictureBox1);
             panel3.Controls.Add(UseBoxes_btn);
-            panel3.Controls.Add(button1);
+            panel3.Controls.Add(pass_button);
             panel3.Controls.Add(game_controller_label);
             panel3.Controls.Add(round_controller_label);
             panel3.Dock = DockStyle.Fill;
@@ -79,8 +89,59 @@
             panel3.Size = new Size(550, 450);
             panel3.TabIndex = 1;
             // 
+            // box5
+            // 
+            box5.AutoSize = true;
+            box5.Location = new Point(466, 165);
+            box5.Name = "box5";
+            box5.Size = new Size(18, 17);
+            box5.TabIndex = 15;
+            box5.UseVisualStyleBackColor = true;
+            box5.CheckedChanged += box_CheckedChanged;
+            // 
+            // box4
+            // 
+            box4.AutoSize = true;
+            box4.Location = new Point(364, 165);
+            box4.Name = "box4";
+            box4.Size = new Size(18, 17);
+            box4.TabIndex = 14;
+            box4.UseVisualStyleBackColor = true;
+            box4.CheckedChanged += box_CheckedChanged;
+            // 
+            // box3
+            // 
+            box3.AutoSize = true;
+            box3.Location = new Point(262, 165);
+            box3.Name = "box3";
+            box3.Size = new Size(18, 17);
+            box3.TabIndex = 13;
+            box3.UseVisualStyleBackColor = true;
+            box3.CheckedChanged += box_CheckedChanged;
+            // 
+            // box2
+            // 
+            box2.AutoSize = true;
+            box2.Location = new Point(158, 165);
+            box2.Name = "box2";
+            box2.Size = new Size(18, 17);
+            box2.TabIndex = 12;
+            box2.UseVisualStyleBackColor = true;
+            box2.CheckedChanged += box_CheckedChanged;
+            // 
+            // box1
+            // 
+            box1.AutoSize = true;
+            box1.Location = new Point(55, 165);
+            box1.Name = "box1";
+            box1.Size = new Size(18, 17);
+            box1.TabIndex = 11;
+            box1.UseVisualStyleBackColor = true;
+            box1.CheckedChanged += box_CheckedChanged;
+            // 
             // pictureBox5
             // 
+            pictureBox5.BorderStyle = BorderStyle.FixedSingle;
             pictureBox5.Location = new Point(438, 89);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(72, 70);
@@ -89,6 +150,7 @@
             // 
             // pictureBox4
             // 
+            pictureBox4.BorderStyle = BorderStyle.FixedSingle;
             pictureBox4.Location = new Point(338, 89);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(72, 70);
@@ -97,6 +159,7 @@
             // 
             // pictureBox3
             // 
+            pictureBox3.BorderStyle = BorderStyle.FixedSingle;
             pictureBox3.Location = new Point(235, 89);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(72, 70);
@@ -105,6 +168,7 @@
             // 
             // pictureBox2
             // 
+            pictureBox2.BorderStyle = BorderStyle.FixedSingle;
             pictureBox2.Location = new Point(132, 89);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(72, 70);
@@ -114,6 +178,7 @@
             // pictureBox1
             // 
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
             pictureBox1.ImageLocation = "";
             pictureBox1.Location = new Point(27, 89);
             pictureBox1.Name = "pictureBox1";
@@ -124,7 +189,7 @@
             // 
             // UseBoxes_btn
             // 
-            UseBoxes_btn.Location = new Point(286, 256);
+            UseBoxes_btn.Location = new Point(310, 256);
             UseBoxes_btn.Name = "UseBoxes_btn";
             UseBoxes_btn.Size = new Size(135, 29);
             UseBoxes_btn.TabIndex = 5;
@@ -132,14 +197,15 @@
             UseBoxes_btn.UseVisualStyleBackColor = true;
             UseBoxes_btn.Click += UseBoxes_btn_Click;
             // 
-            // button1
+            // pass_button
             // 
-            button1.Location = new Point(115, 256);
-            button1.Name = "button1";
-            button1.Size = new Size(145, 29);
-            button1.TabIndex = 4;
-            button1.Text = "Оставить";
-            button1.UseVisualStyleBackColor = true;
+            pass_button.Location = new Point(71, 256);
+            pass_button.Name = "pass_button";
+            pass_button.Size = new Size(209, 29);
+            pass_button.TabIndex = 4;
+            pass_button.Text = "Сохранить комбинацию";
+            pass_button.UseVisualStyleBackColor = true;
+            pass_button.Click += pass_button_Click;
             // 
             // game_controller_label
             // 
@@ -155,9 +221,9 @@
             round_controller_label.AutoSize = true;
             round_controller_label.Location = new Point(226, 9);
             round_controller_label.Name = "round_controller_label";
-            round_controller_label.Size = new Size(110, 20);
+            round_controller_label.Size = new Size(61, 20);
             round_controller_label.TabIndex = 2;
-            round_controller_label.Text = "Первый раунд";
+            round_controller_label.Text = "Раунд 1";
             // 
             // panel2
             // 
@@ -217,12 +283,17 @@
         private Label round_controller_label;
         private Label playersLabel;
         private Label label_for_players;
-        private Button button1;
+        private Button pass_button;
         private PictureBox pictureBox5;
         private PictureBox pictureBox4;
         private PictureBox pictureBox3;
         private PictureBox pictureBox2;
         private PictureBox pictureBox1;
         private Button UseBoxes_btn;
+        private CheckBox box1;
+        private CheckBox box5;
+        private CheckBox box4;
+        private CheckBox box3;
+        private CheckBox box2;
     }
 }
