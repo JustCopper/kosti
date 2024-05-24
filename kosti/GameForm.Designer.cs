@@ -30,6 +30,8 @@
         {
             panel1 = new Panel();
             panel3 = new Panel();
+            comboButton = new Button();
+            endTurn_btn = new Button();
             box5 = new CheckBox();
             box4 = new CheckBox();
             box3 = new CheckBox();
@@ -69,6 +71,8 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(comboButton);
+            panel3.Controls.Add(endTurn_btn);
             panel3.Controls.Add(box5);
             panel3.Controls.Add(box4);
             panel3.Controls.Add(box3);
@@ -88,6 +92,27 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(550, 450);
             panel3.TabIndex = 1;
+            // 
+            // comboButton
+            // 
+            comboButton.Location = new Point(205, 399);
+            comboButton.Name = "comboButton";
+            comboButton.Size = new Size(142, 29);
+            comboButton.TabIndex = 17;
+            comboButton.Text = "Комбинации";
+            comboButton.UseVisualStyleBackColor = true;
+            comboButton.Click += comboButton_Click;
+            // 
+            // endTurn_btn
+            // 
+            endTurn_btn.Location = new Point(187, 204);
+            endTurn_btn.Name = "endTurn_btn";
+            endTurn_btn.Size = new Size(160, 29);
+            endTurn_btn.TabIndex = 16;
+            endTurn_btn.Text = "Закончить ход";
+            endTurn_btn.UseVisualStyleBackColor = true;
+            endTurn_btn.Visible = false;
+            endTurn_btn.Click += endTurn_btn_Click;
             // 
             // box5
             // 
@@ -141,44 +166,43 @@
             // 
             // pictureBox5
             // 
-            pictureBox5.BorderStyle = BorderStyle.FixedSingle;
             pictureBox5.Location = new Point(438, 89);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(72, 70);
             pictureBox5.TabIndex = 10;
             pictureBox5.TabStop = false;
+            pictureBox5.Click += pictureBox_Click;
             // 
             // pictureBox4
             // 
-            pictureBox4.BorderStyle = BorderStyle.FixedSingle;
             pictureBox4.Location = new Point(338, 89);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(72, 70);
             pictureBox4.TabIndex = 9;
             pictureBox4.TabStop = false;
+            pictureBox4.Click += pictureBox_Click;
             // 
             // pictureBox3
             // 
-            pictureBox3.BorderStyle = BorderStyle.FixedSingle;
             pictureBox3.Location = new Point(235, 89);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(72, 70);
             pictureBox3.TabIndex = 8;
             pictureBox3.TabStop = false;
+            pictureBox3.Click += pictureBox_Click;
             // 
             // pictureBox2
             // 
-            pictureBox2.BorderStyle = BorderStyle.FixedSingle;
             pictureBox2.Location = new Point(132, 89);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(72, 70);
             pictureBox2.TabIndex = 7;
             pictureBox2.TabStop = false;
+            pictureBox2.Click += pictureBox_Click;
             // 
             // pictureBox1
             // 
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
             pictureBox1.ImageLocation = "";
             pictureBox1.Location = new Point(27, 89);
             pictureBox1.Name = "pictureBox1";
@@ -186,10 +210,11 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox_Click;
             // 
             // UseBoxes_btn
             // 
-            UseBoxes_btn.Location = new Point(310, 256);
+            UseBoxes_btn.Location = new Point(328, 204);
             UseBoxes_btn.Name = "UseBoxes_btn";
             UseBoxes_btn.Size = new Size(135, 29);
             UseBoxes_btn.TabIndex = 5;
@@ -199,7 +224,7 @@
             // 
             // pass_button
             // 
-            pass_button.Location = new Point(71, 256);
+            pass_button.Location = new Point(55, 204);
             pass_button.Name = "pass_button";
             pass_button.Size = new Size(209, 29);
             pass_button.TabIndex = 4;
@@ -295,5 +320,7 @@
         private CheckBox box4;
         private CheckBox box3;
         private CheckBox box2;
+        private Button endTurn_btn;
+        private Button comboButton;
     }
 }
