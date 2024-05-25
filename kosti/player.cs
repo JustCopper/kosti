@@ -14,7 +14,8 @@ namespace kosti
         public int diceState = 0; 
         public bool is_turn = false;
         public int[] cards = new int[5];
-
+        public int[] lastCards = new int[5];
+        public int notComboDice = 0;
         public player(int id,string name)
         {
             this.id = id;

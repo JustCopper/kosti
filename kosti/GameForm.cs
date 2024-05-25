@@ -290,8 +290,15 @@ namespace kosti
             //if (Convert.ToBoolean(total_scores) == false) 
 
             people[nowPlayingPlayer.id].is_turn = false;
-            if (notCombo != "") people[nowPlayingPlayer.id].scores += Convert.ToInt32(notCombo);
-            else people[nowPlayingPlayer.id].scores += Convert.ToInt32(total_scores);
+            if (notCombo != "")
+            {
+                people[nowPlayingPlayer.id].scores += Convert.ToInt32(notCombo);
+            //    people[nowPlayingPlayer.id].notComboDice = Convert.ToInt32(notCombo);
+            }
+            else {
+                people[nowPlayingPlayer.id].scores += Convert.ToInt32(total_scores);
+                people[nowPlayingPlayer.id].notComboDice = 0;
+            }
             notCombo = "";
             updateScores(people);
             endTurn_btn.Visible = false;
@@ -338,6 +345,7 @@ namespace kosti
             selected_card.BorderStyle = BorderStyle.FixedSingle;
             //nowPlayingPlayer.scores += nowPlayingPlayer.cards[id];
             var cardValue = Convert.ToInt32(nowPlayingPlayer.cards[id - 1]);
+            people[nowPlayingPlayer.id].notComboDice = Convert.ToInt32(nowPlayingPlayer.cards[id - 1]);
             notCombo = Convert.ToString(nowPlayingPlayer.cards.Where(n => n == cardValue).Sum());
 
             endTurn_btn.Enabled = true;
