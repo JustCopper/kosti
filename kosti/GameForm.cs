@@ -26,6 +26,7 @@ namespace kosti
         List<player> people = new List<player>();
         string notCombo = "";
         int round = 1;
+        object comboData;
 
         public GameForm(int players)
         {
@@ -101,46 +102,26 @@ namespace kosti
             {
                 int id = Convert.ToInt32(box.Name.Substring(3)) - 1;
                 int current_box = random.Next(0, 6);
-                people[nowPlayingPlayer.id].cards[id] = current_box + 1;
+                diceRolls[id] = current_box+1;
+                //people[nowPlayingPlayer.id].cards[id] = current_box + 1;
+                
 
-                //diceRolls[id] = current_box + 1;
+                
                 pictureBoxes[id].Image = Image.FromFile(imageFiles[current_box]);
 
                 // Отображаем PictureBox
                 pictureBoxes[id].SizeMode = PictureBoxSizeMode.StretchImage; // Устанавливаем режим отображения, чтобы изображение масштабировалось
                 pictureBoxes[id].Show();
             }
+            people[nowPlayingPlayer.id].cards = diceRolls;
             if (nowPlayingPlayer.diceState == 1) resetCheckBoxes(false);
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    int current_box = random.Next(0, 6);
-            //    diceRolls[i] = current_box + 1;
-            //    //int index = random.Next(imageFiles.Length);
-            //    pictureBoxes[i].Image = Image.FromFile(imageFiles[current_box]);
+            
 
-            //    // Отображаем PictureBox
-            //    pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage; // Устанавливаем режим отображения, чтобы изображение масштабировалось
-            //    pictureBoxes[i].Show();
-            //}
-            string total_scores = Convert.ToString(EvaluateCombination(people[nowPlayingPlayer.id].cards));
-            if (total_scores == "Большой генерал")
-            {
-                round_controller_label.Text = "Игра закончена!";
-                pass_button.Enabled = false;
-                UseBoxes_btn.Enabled = false;
-                game_controller_label.Text = $"Игрок {nowPlayingPlayer.name} победил, выбросив 'Большого генерала'!";
-                return;
-            }
-            if (total_scores == "False")
-            {
-                game_controller_label.Text = $"{nowPlayingPlayer.name}, Комбинации не выпало!\nБросок: {nowPlayingPlayer.diceState}";
-            }
-            else
-            {
-                var comboValue = Convert.ToString(EvaluateCombination(people[nowPlayingPlayer.id].cards));
-                game_controller_label.Text = $"{nowPlayingPlayer.name}, Выпало: {comboDict[Convert.ToInt32(comboValue)]} ({comboValue}), оставляем?\nБросок: {nowPlayingPlayer.diceState}";
-
-            }
+            // ДЛЯ ДЕБАГА!!!!
+            people[nowPlayingPlayer.id].cards = [1,2,3,4,5];
+            people[nowPlayingPlayer.id].lastCards = new object[1,2,3,4,5];
+            // ДЕБАГ!!!
+            checkComboCards();
             if (people[nowPlayingPlayer.id].diceState == 3)
             {
 
@@ -156,7 +137,8 @@ namespace kosti
                     cb.Visible = false;
 
                 }
-
+                checkComboCards();
+                
             }
         }
 
@@ -165,7 +147,7 @@ namespace kosti
             player current_player = people.Find(o => o.is_turn == true);
 
             // Стрейт
-            if (combination.SequenceEqual(new int[] { 1, 2, 3, 4, 5 }) || combination.SequenceEqual(new int[] { 2, 3, 4, 5, 6 }))
+            if (combination.SequenceEqual(new int[] { 1, 2, 3, 4, 5 }) || combination.SequenceEqual(new int[] { 2, 3, 4, 5, 6 } ) || combination.SequenceEqual(new int[] { 1, 3, 4, 5, 6 }) || combination.SequenceEqual(new int[] {1, 2, 3, 4, 5 }))
             {
                 int score = current_player.diceState == 1 ? 25 : 20;
                 //people[current_player.id].diceState += 1;
@@ -223,7 +205,7 @@ namespace kosti
                 UseBoxes_btn.Enabled = false;
                 foreach (var pb in pictureBoxes)
                 {
-                    pb.Image = Image.FromFile("C:\\Users\\JustCopper\\source\\repos\\kosti\\kosti\\unknown.png");
+                    pb.Image = Image.FromFile($"C:\\Users\\{Environment.UserName}\\source\\repos\\kosti\\kosti\\unknown.png");
 
                     // Отображаем PictureBox
                     pb.SizeMode = PictureBoxSizeMode.StretchImage; // Устанавливаем режим отображения, чтобы изображение масштабировалось
@@ -233,7 +215,7 @@ namespace kosti
             game_controller_label.Text = $"Ваш ход {people[0].name} - {people[0].scores} очков\nБросайте кубики!";
             foreach (var pb in pictureBoxes)
             {
-                pb.Image = Image.FromFile("C:\\Users\\JustCopper\\source\\repos\\kosti\\kosti\\unknown.png");
+                pb.Image = Image.FromFile($"C:\\Users\\{Environment.UserName}\\source\\repos\\kosti\\kosti\\unknown.png");
 
                 // Отображаем PictureBox
                 pb.SizeMode = PictureBoxSizeMode.StretchImage; // Устанавливаем режим отображения, чтобы изображение масштабировалось
@@ -272,7 +254,50 @@ namespace kosti
 
         private void pass_button_Click(object sender, EventArgs e)
         {
+            player nowPlayingPlayer = people.Find(o => o.is_turn == true);
+            string total_scores = Convert.ToString(EvaluateCombination(people[nowPlayingPlayer.id].cards));
+            var cbs = new[] { box1, box2, box3, box4, box5 };
+            var pictureBoxes = new[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5 };
+            people[nowPlayingPlayer.id].is_turn = false;
+            if (notCombo != "")
+            {
+                people[nowPlayingPlayer.id].scores += Convert.ToInt32(notCombo);
+                //    people[nowPlayingPlayer.id].notComboDice = Convert.ToInt32(notCombo);
+            }
+            else
+            {
+                people[nowPlayingPlayer.id].scores += Convert.ToInt32(total_scores);
+                people[nowPlayingPlayer.id].notComboDice = 0;
+            }
+            notCombo = "";
+            updateScores(people);
+            endTurn_btn.Visible = false;
+            UseBoxes_btn.Visible = true;
+            pass_button.Visible = true;
+            resetCheckBoxes();
+            //foreach (var cb in cbs)
+            //{
 
+            //    cb.Visible = true;
+
+            //}
+
+
+            if (nowPlayingPlayer.id + 1 == people.Count())
+            {
+                startNewRound();
+            }
+            else
+            {
+                people[nowPlayingPlayer.id + 1].is_turn = true;
+                game_controller_label.Text = $"Ваш ход {people[nowPlayingPlayer.id + 1].name} - {people[nowPlayingPlayer.id + 1].scores} очков\nБросайте кубики!";
+                foreach (var pb in pictureBoxes)
+                {
+                    pb.Image = Image.FromFile($"C:\\Users\\{Environment.UserName}\\source\\repos\\kosti\\kosti\\unknown.png");
+                    pb.SizeMode = PictureBoxSizeMode.StretchImage; // Устанавливаем режим отображения, чтобы изображение масштабировалось
+                    pb.Show();
+                }
+            }
         }
 
         private void endTurn_btn_Click(object sender, EventArgs e)
@@ -280,11 +305,8 @@ namespace kosti
             endTurn_btn.Enabled = false;
 
             var cbs = new[] { box1, box2, box3, box4, box5 };
-            //foreach (var box in checkBoxes)
-            //{
-            //    box.CheckedChanged -= CB_CheckedChanged;
-            //}
-            var pictureBoxes = new[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5 }; // Замените на имена ваших PictureBox
+            var pictureBoxes = new[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5 };
+
             player nowPlayingPlayer = people.Find(o => o.is_turn == true);
             string total_scores = Convert.ToString(EvaluateCombination(people[nowPlayingPlayer.id].cards));
             //if (Convert.ToBoolean(total_scores) == false) 
@@ -323,7 +345,7 @@ namespace kosti
                 game_controller_label.Text = $"Ваш ход {people[nowPlayingPlayer.id + 1].name} - {people[nowPlayingPlayer.id + 1].scores} очков\nБросайте кубики!";
                 foreach (var pb in pictureBoxes)
                 {
-                    pb.Image = Image.FromFile("C:\\Users\\JustCopper\\source\\repos\\kosti\\kosti\\unknown.png");
+                    pb.Image = Image.FromFile($"C:\\Users\\{Environment.UserName}\\source\\repos\\kosti\\kosti\\unknown.png");
                     pb.SizeMode = PictureBoxSizeMode.StretchImage; // Устанавливаем режим отображения, чтобы изображение масштабировалось
                     pb.Show();
                 }
@@ -355,6 +377,35 @@ namespace kosti
         {
             ComboForm comboForm = new ComboForm(people);
             comboForm.Show();
+        }
+        private void checkComboCards()
+        {
+            player nowPlayingPlayer = people.Find(o => o.is_turn == true);
+            string total_scores = Convert.ToString(EvaluateCombination(people[nowPlayingPlayer.id].cards));
+            if (total_scores == "Большой генерал")
+            {
+                round_controller_label.Text = "Игра закончена!";
+                pass_button.Enabled = false;
+                UseBoxes_btn.Enabled = false;
+                game_controller_label.Text = $"Игрок {nowPlayingPlayer.name} победил, выбросив 'Большого генерала'!";
+                return;
+            }
+            if (total_scores == "False")
+            {
+                game_controller_label.Text = $"{nowPlayingPlayer.name}, Комбинации не выпало!\nБросок: {nowPlayingPlayer.diceState}";
+            }
+            else
+            {
+                var comboValue = Convert.ToString(EvaluateCombination(people[nowPlayingPlayer.id].cards));
+                var lastcomboValue = Convert.ToString(EvaluateCombination(people[nowPlayingPlayer.id].lastCards));
+                if (comboValue == lastcomboValue)
+                {
+                    game_controller_label.Text = $"{nowPlayingPlayer.name}, Выпало: {comboDict[Convert.ToInt32(comboValue)]} ({comboValue}). Комбинация уже была выброшена!\nБросок: {nowPlayingPlayer.diceState}";
+                    return;
+                }
+                game_controller_label.Text = $"{nowPlayingPlayer.name}, Выпало: {comboDict[Convert.ToInt32(comboValue)]} ({comboValue})\nБросок: {nowPlayingPlayer.diceState}";
+
+            }
         }
     }
 }

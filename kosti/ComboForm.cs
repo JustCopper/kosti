@@ -13,20 +13,21 @@ namespace kosti
 {
     public partial class ComboForm : Form
     {
-        List<string> labels = new List<string>() { "Единицы", "Двойки", "Тройки","Четверки","Пятерки", "Шестёрки","Стрит", "Фул хаус", "Каре", "Генерал" };
+        List<string> labels = new List<string>() { "Единицы", "Двойки", "Тройки", "Четверки", "Пятерки", "Шестёрки", "Стрит", "Фулл хаус", "Каре", "Малый генерал" };
         List<player> players = new List<player>();
         Dictionary<int, string> comboDict = new Dictionary<int, string>();
+        Dictionary<string, int> paths = new Dictionary<string, int>() { { "Стрит", 7 }, { "Фулл хаус", 8 }, { "Каре", 9 }, { "Малый генерал", 10 } };
         
         public ComboForm(List<player> players)
         {
             InitializeComponent();
             comboDict[60] = "Малый генерал";
             comboDict[45] = "Каре";
-            comboDict[40] = "Дособрано Каре";
+            comboDict[40] = "Каре";
             comboDict[35] = "Фулл хаус";
-            comboDict[30] = "Дособран Фулл хаус ";
+            comboDict[30] = "Фулл хаус";
             comboDict[25] = "Стрит";
-            comboDict[20] = "Дособран Стрит";
+            comboDict[20] = "Стрит";
             
 
             this.players = players;
@@ -60,8 +61,16 @@ namespace kosti
             {
                 if (players[i].notComboDice != 0) // Если комбо не выпало и выбрана цифра
                 {
-                    dataGridView1.Rows[players[i].notComboDice-1].Cells[i+1].Value = "*";
+                    dataGridView1.Rows[players[i].notComboDice - 1].Cells[i + 1].Value = "*";
 
+                }
+                
+                else
+                {
+                    if (players[i].cards.All(x=>x == 0)) continue;
+                    var combo = EvaluateCombination(players[i].lastCards);
+                    var comboIndex = paths[comboDict[Convert.ToInt32(combo)]];
+                    dataGridView1.Rows[comboIndex - 1].Cells[i + 1].Value = "*";
                 }
             }
             }
@@ -71,7 +80,7 @@ namespace kosti
             player current_player = players.Find(o => o.is_turn == true);
 
             // Стрейт
-            if (combination.SequenceEqual(new int[] { 1, 2, 3, 4, 5 }) || combination.SequenceEqual(new int[] { 2, 3, 4, 5, 6 }))
+            if (combination.SequenceEqual(new int[] { 1, 2, 3, 4, 5 }) || combination.SequenceEqual(new int[] { 2, 3, 4, 5, 6 }) || combination.SequenceEqual(new int[] { 1, 3, 4, 5, 6 }) || combination.SequenceEqual(new int[] { 1, 2, 3, 4, 5 }))
             {
                 int score = current_player.diceState == 1 ? 25 : 20;
                 //people[current_player.id].diceState += 1;
