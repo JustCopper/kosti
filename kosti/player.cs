@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 
 namespace kosti
 {
-    public class player
+    public class player<T>
     {
         public int id;
         public string name;
         public int scores = 0;
         public int diceState = 0; 
         public bool is_turn = false;
-        public int[] cards = new int[5];
-        public int[] lastCards = new int[5];
-        public int notComboDice = 0;
+        public int[] cards { get; set; }
+        public int[] lastCards { get; set; }
+        public int notCombo { get; set; }
         public player(int id,string name)
         {
             this.id = id;
             this.name = name;
         }
     }
+    
 }
