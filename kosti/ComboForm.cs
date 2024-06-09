@@ -59,15 +59,15 @@ namespace kosti
             dataGridView1.DataSource = dt;
             for (int i = 0; i < players.Count; i++)
             {
-                if (players[i].notComboDice != 0) // Если комбо не выпало и выбрана цифра
+                if (players[i].lastNotCombo != 0) // Если комбо не выпало и выбрана цифра
                 {
-                    dataGridView1.Rows[players[i].notComboDice - 1].Cells[i + 1].Value = "*";
+                    dataGridView1.Rows[players[i].lastNotCombo - 1].Cells[i + 1].Value = "*";
 
                 }
                 
                 else
                 {
-                    if (players[i].cards.All(x=>x == 0)) continue;
+                    if (players[i].lastCards.All(x=>x == 0)) continue;
                     var combo = EvaluateCombination(players[i].lastCards);
                     var comboIndex = paths[comboDict[Convert.ToInt32(combo)]];
                     dataGridView1.Rows[comboIndex - 1].Cells[i + 1].Value = "*";
